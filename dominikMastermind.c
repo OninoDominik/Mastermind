@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include <time.h> // inclusion de la librairie time.h pour le random
 #define NBTOURS 10 // Constante nbtours =10
+#define NBJETONS 4 // il faut 4 jetons qui compose une combinaison
 
 struct Mastermind //  creation de la structure mastermind
 {
-    int combinaison[4];
+    int combinaison[NBJETONS];
     int nbEssai;
     int nbVictoire;
     int nbDefaite;
-    int essaiCombinaison[4];  // ajout de l'essai du joueur
+    int essaiCombinaison[NBJETONS];  // ajout de l'essai du joueur
 };
 
 struct Resultat // creation de la structure resultat
@@ -19,7 +20,8 @@ struct Resultat // creation de la structure resultat
 };
 
 struct Resultat TestCombi(struct Mastermind partie) // fonction qui appelle la structure de la partie et qui renvoi les resultat sous forme d'un nombre pour les bien placé
-{                                                   // et un nombre pourles mal placé
+{
+    // et un nombre pourles mal placé
 
     struct Resultat combi;
     combi.nbEnPlace=0;                             // initialisation des bien placé a 0
@@ -30,7 +32,7 @@ struct Resultat TestCombi(struct Mastermind partie) // fonction qui appelle la s
     int comptjdansessai=0;                         // compte combien de fois j est dans la tentative d'essai
     int comptjbienplace=0;                         // compte combien de fois j est bien placé
 
-    for (i=0; i<4; i++)                             // on test les bien placé
+    for (i=0; i<NBJETONS; i++)                             // on test les bien placé
     {
         if (partie.essaiCombinaison[i]==partie.combinaison[i])
         {
@@ -41,7 +43,7 @@ struct Resultat TestCombi(struct Mastermind partie) // fonction qui appelle la s
 
     for (j=0; j<10; j++)                        // on teste toutes les valeurs entre 0 et 9
     {
-        for (i=0; i<4; i++)
+        for (i=0; i<NBJETONS; i++)
         {
             if (j==partie.combinaison[i]) // on teste toutes les valeurs entre 0 et 9 dans la reponse
             {
@@ -84,9 +86,9 @@ int main()
     partie.nbVictoire=0;            // pour une nouvelle sceance on s'assure que les variable soit a 0
     do                              // debut de la boucle do while pour rejouer
     {
-        for (i=0; i<4; i++)         // creation de la combinaison gagnante dans le tableau de taille 4
+        for (i=0; i<NBJETONS; i++)         // creation de la combinaison gagnante dans le tableau de taille 4
         {
-            partie.combinaison[i]=rand()%10;  // on cree la combinaisons gagnante sui doit etre trouvé par le joueur
+            partie.combinaison[i]=rand()%10;  // on cree la combinaisons gagnante qui doit etre trouvé par le joueur
         }
         partie.nbEssai=NBTOURS; // le nombre maximal de tours est inserer dans la structure mastermind nommé partie
         pastrouve=1;            // on remet pas trouve a 1
@@ -100,36 +102,36 @@ int main()
             {
                 printf("Il vous reste %d tentatives\n",partie.nbEssai);
             }
-            for (i=0; i<4; i++) // boucle pour remplir le tableau d'essai de combinaison du joueur de la structure mastermind partie
+            for (i=0; i<NBJETONS; i++) // boucle pour remplir le tableau d'essai de combinaison du joueur de la structure mastermind partie
             {
                 do
                 {
-                    if (i==0) //cas partilier du 1 ere
-                {
-                    printf("Entrez votre %der chiffre compris entre 0 et 9\n",i+1); //on demande la saisie du premier au 4eme chiffre
-                    fseek(stdin,0,SEEK_END); // on s'assure qu'il ne puisse rentrer qu'une valeur a la fois
-                    scanf("%d",&partie.essaiCombinaison[i]); // on insere les valeur entrer par le joueur dans le tableau d'essai de combinaison du joueur de la structure mastermind partie
-                }
-                else // cas particulier du xeme
-                {
-                    printf("Entrez votre %deme chiffre compris entre 0 et 9\n",i+1); //on demande la saisie du premier au 4eme chiffre
-                    fseek(stdin,0,SEEK_END); // on s'assure qu'il ne puisse rentrer qu'une valeur a la fois
-                    scanf("%d",&partie.essaiCombinaison[i]); // on insere les valeur entrer par le joueur dans le tableau d'essai de combinaison du joueur de la structure mastermind partie
-                }
+                    if (i==0) //cas partilier du 1 er
+                    {
+                        printf("Entrez votre %der chiffre compris entre 0 et 9\n",i+1); //on demande la saisie du premier au 4eme chiffre
+                        fseek(stdin,0,SEEK_END); // on s'assure qu'il ne puisse rentrer qu'une valeur a la fois
+                        scanf("%d",&partie.essaiCombinaison[i]); // on insere les valeur entrer par le joueur dans le tableau d'essai de combinaison du joueur de la structure mastermind partie
+                    }
+                    else // cas du xeme
+                    {
+                        printf("Entrez votre %deme chiffre compris entre 0 et 9\n",i+1); //on demande la saisie du premier au 4eme chiffre
+                        fseek(stdin,0,SEEK_END); // on s'assure qu'il ne puisse rentrer qu'une valeur a la fois
+                        scanf("%d",&partie.essaiCombinaison[i]); // on insere les valeur entrer par le joueur dans le tableau d'essai de combinaison du joueur de la structure mastermind partie
+                    }
 
                 }
                 while (partie.essaiCombinaison[i]<0 || partie.essaiCombinaison[i]>9); // boucle qui tester si le joueur a bien inserer un nombre entre 0 et 9
 
             }
             testVictoire=0; //on reinitialise le test victoire pour les parties apres la 1ere
-            for (i=0; i<4; i++) // on test si le joueur a trouvé
+            for (i=0; i<NBJETONS; i++) // on test si le joueur a trouvé
             {
                 if (partie.essaiCombinaison[i]==partie.combinaison[i])
                 {
                     testVictoire++; // si oui on incremente
                 }
             }
-            if (testVictoire==4) // on teste si les 4 valeurs de la combinaison sont juste
+            if (testVictoire==NBJETONS) // on teste si les 4 valeurs de la combinaison sont juste
             {
                 pastrouve=0; // on indique que le jouer a trouve pour sortir de la boucle
                 partie.nbVictoire++; // on incremente la victoire pour son historique
@@ -159,7 +161,7 @@ int main()
                 {
                     partie.nbDefaite++; // on incremente son nombre de defaite
                     printf("la combinaison gagnante etait:\n");
-                    for (i=0; i<4; i++) // une boucle pour ecrire la combinaison en entier
+                    for (i=0; i<NBJETONS; i++) // une boucle pour ecrire la combinaison en entier
                     {
                         printf("%d",partie.combinaison[i]);
                     }
