@@ -15,8 +15,8 @@ struct Mastermind //  creation de la structure mastermind
 
 struct Resultat // creation de la structure resultat
 {
-    int nbEnPlace;
-    int nbDesordre;
+int nbEnPlace;
+int nbDesordre;
 };
 
 struct Resultat TestCombi(struct Mastermind partie) // fonction qui appelle la structure de la partie et qui renvoi les resultat sous forme d'un nombre pour les bien placé
